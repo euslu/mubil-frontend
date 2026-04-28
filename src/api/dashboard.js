@@ -11,3 +11,8 @@ export async function fetchDashboardZamanSerisi(aralik = 'tum', granularity = 'a
   });
   return data; // { aralik, granularity, seri: [{tarih, sayi}] }
 }
+
+export async function fetchIlceDagilimi(aralik = 'tum') {
+  const { data } = await api.get('/mubil/dashboard/ilce-dagilimi', { params: { aralik } });
+  return data; // { aralik, dagilim: [{ilceId, ilceAd, sayi}] }
+}

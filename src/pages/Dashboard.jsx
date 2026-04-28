@@ -5,10 +5,11 @@ import {
   ListPlus, Map, BarChart3, Settings, Clock, Loader2,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { fetchDashboardOzet, fetchDashboardZamanSerisi } from '../api/dashboard.js';
+import { fetchDashboardOzet, fetchDashboardZamanSerisi, fetchIlceDagilimi } from '../api/dashboard.js';
 import MetricCard from '../components/dashboard/MetricCard.jsx';
 import AralikToggle from '../components/dashboard/AralikToggle.jsx';
 import ZamanSerisiChart from '../components/dashboard/ZamanSerisiChart.jsx';
+import IlcePieChart from '../components/dashboard/IlcePieChart.jsx';
 
 const MODULLER = [
   { ad: 'Olay Kayıt',     aciklama: 'Yeni afet olayı kaydı oluştur',         ikon: ListPlus,   href: '/olay/yeni' },
@@ -46,10 +47,11 @@ function ModulCard({ m }) {
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [aralik, setAralik] = useState('tum');
+  const [aralik, setAralik] = useState('90g');
 
   const [ozet,    setOzet]    = useState(null);
   const [seri,    setSeri]    = useState(null);
+  const [ilceDag, setIlceDag] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
 
@@ -60,11 +62,13 @@ export default function Dashboard() {
     Promise.all([
       fetchDashboardOzet(aralik),
       fetchDashboardZamanSerisi(aralik, 'auto'),
+      fetchIlceDagilimi(aralik),
     ])
-      .then(([o, s]) => {
+      .then(([o, s, d]) => {
         if (cancelled) return;
         setOzet(o);
         setSeri(s);
+        setIlceDag(d);
       })
       .catch((e) => {
         if (cancelled) return;
@@ -157,6 +161,24 @@ export default function Dashboard() {
             <ZamanSerisiChart
               seri={seri?.seri}
               granularity={seri?.granularity}
+              loading={false}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* İlçe dağılımı pie chart */}
+      <div className="card-mubil">
+        <h3 className="font-medium text-slate-900">İlçe Dağılımı</h3>
+        <div className="mt-3">
+          {loading && !ilceDag ? (
+            <div className="flex h-64 items-center justify-center text-sm text-slate-500">
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Yükleniyor…
+            </div>
+          ) : (
+            <IlcePieChart
+              dagilim={ilceDag?.dagilim}
               loading={false}
             />
           )}
