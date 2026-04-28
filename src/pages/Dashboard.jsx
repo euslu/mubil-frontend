@@ -4,10 +4,10 @@ import { useAuth } from '../context/AuthContext.jsx';
 
 const MODULLER = [
   { ad: 'Olay Kayıt',     aciklama: 'Yeni afet olayı kaydı oluştur',         ikon: ListPlus,   href: '/olay/yeni' },
-  { ad: 'Olay Listesi',   aciklama: 'Geçmiş ve aktif olayları görüntüle',    ikon: Database,   yakinda: true },
+  { ad: 'Olay Listesi',   aciklama: 'Geçmiş ve aktif olayları görüntüle',    ikon: Database,   href: '/olay' },
   { ad: 'Harita Görünümü',aciklama: 'Olayları ilçe bazında haritada gör',    ikon: Map,        yakinda: true },
   { ad: 'İstatistikler',  aciklama: 'Aylık ve ilçe bazlı raporlar',          ikon: BarChart3,  yakinda: true },
-  { ad: 'Geçmiş Veriler', aciklama: '2025-2026 tarihsel kayıtlar',           ikon: Clock,      yakinda: true },
+  { ad: 'Geçmiş Veriler', aciklama: '2025-2026 tarihsel kayıtlar',           ikon: Clock,      href: '/olay?eski=1' },
   { ad: 'Yönetim',        aciklama: 'Kullanıcı, kategori, birim',            ikon: Settings,   yakinda: true, minRole: 'sef' },
 ];
 
@@ -41,7 +41,6 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Hoş geldin kartı */}
       <div className="card-mubil bg-gradient-to-br from-mubil-600 to-warning-600 text-white">
         <div className="text-sm font-medium uppercase tracking-wider text-white/80">Hoş geldiniz</div>
         <div className="mt-1 text-2xl font-semibold">{user?.displayName}</div>
@@ -50,7 +49,6 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Modüller grid */}
       <div>
         <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-slate-500">Modüller</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -63,7 +61,7 @@ export default function Dashboard() {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500">
-        {`Bu sayfa MUBİL'in iskelet halidir. Olay kayıt, harita ve raporlama
+        {`Olay kayıt ve liste modülleri aktiftir. Harita, raporlar ve yönetim
         modülleri sırasıyla devreye alınacaktır.`}
       </div>
     </div>
