@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 const MODULLER = [
   { ad: 'Olay Kayıt',     aciklama: 'Yeni afet olayı kaydı oluştur',         ikon: ListPlus,   href: '/olay/yeni' },
   { ad: 'Olay Listesi',   aciklama: 'Geçmiş ve aktif olayları görüntüle',    ikon: Database,   href: '/olay' },
-  { ad: 'Harita Görünümü',aciklama: 'Olayları ilçe bazında haritada gör',    ikon: Map,        yakinda: true },
+  { ad: 'Harita Görünümü',aciklama: 'Olayları konum bazında haritada gör',   ikon: Map,        href: '/harita' },
   { ad: 'İstatistikler',  aciklama: 'Aylık ve ilçe bazlı raporlar',          ikon: BarChart3,  yakinda: true },
   { ad: 'Geçmiş Veriler', aciklama: '2025-2026 tarihsel kayıtlar',           ikon: Clock,      href: '/olay?eski=1' },
   { ad: 'Yönetim',        aciklama: 'Kullanıcı, kategori, birim',            ikon: Settings,   yakinda: true, minRole: 'sef' },
@@ -61,8 +61,8 @@ export default function Dashboard() {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-500">
-        {`Olay kayıt ve liste modülleri aktiftir. Harita, raporlar ve yönetim
-        modülleri sırasıyla devreye alınacaktır.`}
+        {`Olay kayıt, liste ve harita modülleri aktiftir. İstatistikler ve
+        yönetim modülleri sırasıyla devreye alınacaktır.`}
       </div>
     </div>
   );

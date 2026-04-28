@@ -29,6 +29,19 @@ export async function deleteOlay(id) {
  * Foto upload — multipart/form-data.
  * Returns: { items: [{ url, filename, ... }] }
  */
+/**
+ * Harita için kompakt kayıtlar (pagination yok, max 5000).
+ * Backend'in /api/mubil/olay/map endpoint'i.
+ */
+export async function fetchMapKayitlar(filters = {}) {
+  const params = {};
+  for (const [k, v] of Object.entries(filters)) {
+    if (v !== null && v !== '' && v !== undefined) params[k] = v;
+  }
+  const { data } = await api.get('/mubil/olay/map', { params });
+  return data; // { toplam, kayitlar, limit }
+}
+
 export async function uploadFotograflar(files, onProgress) {
   const fd = new FormData();
   for (const f of files) fd.append('fotograflar', f);
