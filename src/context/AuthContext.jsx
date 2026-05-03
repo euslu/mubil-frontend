@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { login as apiLogin } from '../api/auth';
+import api from '../lib/api';
 
 const AuthContext = createContext(null);
 
@@ -21,6 +22,7 @@ export function AuthProvider({ children }) {
       // bozuk JSON — sessizce temizle
       localStorage.removeItem('mubil_token');
       localStorage.removeItem('mubil_user');
+      localStorage.removeItem('mubil_refresh_token');
     }
     setReady(true);
   }, []);
@@ -34,14 +36,27 @@ export function AuthProvider({ children }) {
     };
     localStorage.setItem('mubil_token', data.token);
     localStorage.setItem('mubil_user',  JSON.stringify(userObj));
+    if (data.refreshToken) {
+      localStorage.setItem('mubil_refresh_token', data.refreshToken);
+    }
     setToken(data.token);
     setUser(userObj);
     return userObj;
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    // Backend'e refresh token'ı revoke ettir
+    const rt = localStorage.getItem('mubil_refresh_token');
+    if (rt) {
+      try {
+        await api.post('/auth/logout', { refreshToken: rt });
+      } catch {
+        // logout API hatası oturum kapatmayı engellemesin
+      }
+    }
     localStorage.removeItem('mubil_token');
     localStorage.removeItem('mubil_user');
+    localStorage.removeItem('mubil_refresh_token');
     setToken(null);
     setUser(null);
   }, []);

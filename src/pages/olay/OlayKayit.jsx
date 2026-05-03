@@ -219,7 +219,7 @@ export default function OlayKayit() {
       <Stepper steps={STEPS} currentStep={step} completedSteps={completedSteps} />
 
       <div className="card-mubil">
-        {step === 0 && <StepLokasyon form={form} setForm={setForm} errors={errors} ilceler={ilceler} />}
+        {step === 0 && <StepLokasyon form={form} setForm={setForm} errors={errors} ilceler={ilceler} isEdit={isEdit} />}
         {step === 1 && <StepOlay     form={form} setForm={setForm} errors={errors} />}
         {step === 2 && <StepMudahale form={form} setForm={setForm} errors={errors} kategoriler={kategoriler} birimler={birimler} />}
         {step === 3 && <StepFoto     form={form} setForm={setForm} />}

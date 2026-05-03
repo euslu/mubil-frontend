@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { ROL_SEVIYE } from '../lib/rolLabels.jsx';
 
 export default function PrivateRoute({ children, minRole }) {
   const { user, token, ready } = useAuth();
@@ -23,7 +24,6 @@ export default function PrivateRoute({ children, minRole }) {
   }
 
   if (minRole) {
-    const ROL_SEVIYE = { admin: 5, daire_baskani: 4, sef: 3, personel: 2, user: 1 };
     const have = ROL_SEVIYE[user.mubilRole] || 0;
     const need = ROL_SEVIYE[minRole] || 0;
     if (have < need) {

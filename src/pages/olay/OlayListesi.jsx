@@ -142,10 +142,10 @@ export default function OlayListesi() {
 
         <div className="flex items-center gap-2">
           {/* View toggle */}
-          <div className="inline-flex overflow-hidden rounded-lg border border-slate-300 bg-white">
+          <div className="inline-flex overflow-hidden rounded-lg border border-slate-300 bg-white shadow-sm">
             <button
               onClick={() => setView('table')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-sm transition ${
+              className={`flex items-center gap-2 px-4 py-2.5 font-medium transition ${
                 view === 'table' ? 'bg-mubil-50 text-mubil-700' : 'text-slate-600 hover:bg-slate-50'
               }`}
               title="Tablo görünümü"
@@ -155,7 +155,7 @@ export default function OlayListesi() {
             </button>
             <button
               onClick={() => setView('cards')}
-              className={`flex items-center gap-1.5 border-l border-slate-300 px-3 py-1.5 text-sm transition ${
+              className={`flex items-center gap-2 border-l border-slate-300 px-4 py-2.5 font-medium transition ${
                 view === 'cards' ? 'bg-mubil-50 text-mubil-700' : 'text-slate-600 hover:bg-slate-50'
               }`}
               title="Kart görünümü"
@@ -200,6 +200,7 @@ export default function OlayListesi() {
         ilceler={ilceler}
         birimler={birimler}
         kategoriler={kategoriler}
+        defaultOpen
       />
 
       {/* Hata */}

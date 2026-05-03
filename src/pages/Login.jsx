@@ -49,9 +49,7 @@ export default function Login() {
         <div className="pointer-events-none absolute -bottom-32 -right-16 h-80 w-80 rounded-full bg-amber-300/20 blur-3xl" />
 
         <div className="relative z-10 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
-            <ShieldAlert className="h-6 w-6 text-white" />
-          </div>
+          <img src="/mugla-logo.svg" alt="Muğla Büyükşehir Belediyesi" className="h-12 w-12 drop-shadow-md" />
           <div className="text-sm font-medium uppercase tracking-wider text-white/80">
             Muğla Büyükşehir Belediyesi
           </div>

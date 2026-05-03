@@ -2,7 +2,7 @@ import api from '../lib/api';
 
 /**
  * Ana portal login endpoint'ini kullanır.
- * Response içinde mubilAccess + mubilRole gelir.
+ * Response içinde mubilAccess + mubilRole + refreshToken gelir.
  */
 export async function login(username, password) {
   const { data } = await api.post('/auth/login', { username, password });
@@ -24,7 +24,7 @@ export async function fetchMe() {
   return data;
 }
 
-export async function refreshToken() {
-  const { data } = await api.post('/auth/refresh');
+export async function refreshToken(token) {
+  const { data } = await api.post('/auth/refresh', { refreshToken: token });
   return data;
 }

@@ -1,11 +1,38 @@
-import { Field, TextInput, DateInput, Select, NumberInput } from './FormFields.jsx';
+import { Field, DateInput, Select, NumberInput } from './FormFields.jsx';
+import MahalleAutocomplete from '../MahalleAutocomplete.jsx';
+import LokasyonSecici from '../LokasyonSecici.jsx';
+import GpsButton from '../GpsButton.jsx';
 
-export default function StepLokasyon({ form, setForm, errors, ilceler }) {
+export default function StepLokasyon({ form, setForm, errors, ilceler, isEdit }) {
   const ilceOptions = ilceler.map((i) => ({ value: String(i.id), label: i.ad }));
+  const seciliIlceAd = ilceler.find(i => String(i.id) === String(form.ilceId))?.ad || '';
+
+  function onGpsPosition(pos) {
+    setForm(f => ({
+      ...f,
+      enlem: pos.lat.toFixed(6),
+      boylam: pos.lng.toFixed(6),
+    }));
+  }
 
   return (
     <div className="space-y-5">
-      <h3 className="text-base font-semibold text-slate-900">Lokasyon ve Tarih</h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-base font-semibold text-slate-900">Lokasyon ve Tarih</h3>
+        <LokasyonSecici
+          ilce={seciliIlceAd}
+          onPick={(loc) => {
+            const ilce = ilceler.find(i => i.ad === loc.ilce);
+            setForm(f => ({
+              ...f,
+              ilceId: ilce ? String(ilce.id) : f.ilceId,
+              mahalleLokasyon: loc.mahalle || f.mahalleLokasyon,
+              enlem: loc.lat,
+              boylam: loc.lng,
+            }));
+          }}
+        />
+      </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Tarih" required error={errors.tarih}>
@@ -18,7 +45,7 @@ export default function StepLokasyon({ form, setForm, errors, ilceler }) {
         <Field label="İlçe" required error={errors.ilceId}>
           <Select
             value={form.ilceId}
-            onChange={(v) => setForm({ ...form, ilceId: v })}
+            onChange={(v) => setForm({ ...form, ilceId: v, mahalleLokasyon: '' })}
             options={ilceOptions}
             placeholder="İlçe seçiniz…"
           />
@@ -29,20 +56,26 @@ export default function StepLokasyon({ form, setForm, errors, ilceler }) {
         label="Mahalle / Lokasyon"
         required
         error={errors.mahalleLokasyon}
-        hint="Olayın gerçekleştiği mahalle veya lokasyonu yazın (örn. Kemeraltı, Çiftlik mevkii)."
+        hint="İlçe seçtikten sonra yazarak mevcut mahalleleri arayabilirsiniz."
       >
-        <TextInput
+        <MahalleAutocomplete
+          ilce={seciliIlceAd}
           value={form.mahalleLokasyon}
           onChange={(v) => setForm({ ...form, mahalleLokasyon: v })}
           placeholder="Mahalle adı veya lokasyon"
+          required
         />
       </Field>
 
-      <details className="group rounded-lg border border-slate-200 bg-slate-50 p-3">
-        <summary className="cursor-pointer select-none text-sm font-medium text-slate-700">
-          GPS Koordinatları (opsiyonel)
-        </summary>
-        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-3">
+        <div className="text-sm font-medium text-slate-700">GPS Koordinatları</div>
+
+        <GpsButton
+          onPosition={onGpsPosition}
+          otomatikDene={!isEdit}
+        />
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Enlem" hint="Örn. 37.0242">
             <NumberInput
               value={form.enlem}
@@ -58,7 +91,10 @@ export default function StepLokasyon({ form, setForm, errors, ilceler }) {
             />
           </Field>
         </div>
-      </details>
+        <p className="text-xs text-slate-400">
+          GPS butonu telefonun konumunu otomatik doldurur. Manuel düzenlemek için alanlara tıklayın.
+        </p>
+      </div>
     </div>
   );
 }
